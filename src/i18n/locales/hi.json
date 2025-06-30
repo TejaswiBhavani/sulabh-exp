@@ -1,0 +1,158 @@
+{
+  "common": {
+    "submit": "जमा करें",
+    "cancel": "रद्द करें",
+    "save": "सहेजें",
+    "edit": "संपादित करें",
+    "delete": "हटाएं",
+    "search": "खोजें",
+    "filter": "फिल्टर",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "warning": "चेतावनी",
+    "info": "जानकारी",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "back": "वापस",
+    "next": "अगला",
+    "previous": "पिछला",
+    "close": "बंद करें"
+  },
+  "nav": {
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "submitComplaint": "शिकायत दर्ज करें",
+    "submitSuggestion": "सुझाव दें",
+    "trackComplaint": "शिकायत ट्रैक करें",
+    "suggestions": "सुझाव",
+    "login": "लॉगिन",
+    "register": "पंजीकरण",
+    "signup": "साइन अप",
+    "logout": "लॉगआउट",
+    "profile": "प्रोफाइल",
+    "admin": "एडमिन पैनल",
+    "authority": "प्राधिकरण पैनल",
+    "reports": "रिपोर्ट्स",
+    "ngoDashboard": "एनजीओ डैशबोर्ड",
+    "settings": "सेटिंग्स"
+  },
+  "home": {
+    "title": "सुलभ",
+    "subtitle": "ऑनलाइन शिकायत निवारण प्रणाली",
+    "description": "नागरिकों के लिए शिकायत दर्ज करने और ट्रैक करने का आसान और सुलभ मंच",
+    "submitComplaint": "शिकायत दर्ज करें",
+    "submitSuggestion": "सुझाव दें",
+    "trackComplaint": "अपनी शिकायत ट्रैक करें",
+    "publicDashboard": "सार्वजनिक डैशबोर्ड",
+    "features": {
+      "title": "मुख्य विशेषताएं",
+      "easy": {
+        "title": "उपयोग में आसान",
+        "description": "सभी उपयोगकर्ताओं के लिए डिज़ाइन किया गया सरल और सहज इंटरफेस"
+      },
+      "track": {
+        "title": "रियल-टाइम ट्रैकिंग",
+        "description": "सूचनाओं के साथ अपनी शिकायत की स्थिति को रियल-टाइम में ट्रैक करें"
+      },
+      "multilingual": {
+        "title": "बहुभाषी समर्थन",
+        "description": "बेहतर पहुंच के लिए कई भारतीय भाषाओं में उपलब्ध"
+      },
+      "secure": {
+        "title": "सुरक्षित और निजी",
+        "description": "आपका डेटा एंटरप्राइज़-ग्रेड सुरक्षा के साथ सुरक्षित है"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "सुलभ में लॉगिन करें",
+      "email": "ईमेल पता",
+      "password": "पासवर्ड",
+      "rememberMe": "मुझे याद रखें",
+      "forgotPassword": "पासवर्ड भूल गए?",
+      "noAccount": "खाता नहीं है?",
+      "signUp": "यहाँ साइन अप करें"
+    },
+    "register": {
+      "title": "खाता बनाएं",
+      "firstName": "पहला नाम",
+      "lastName": "अंतिम नाम",
+      "email": "ईमेल पता",
+      "phone": "फोन नंबर",
+      "password": "पासवर्ड",
+      "confirmPassword": "पासवर्ड की पुष्टि करें",
+      "agreeTerms": "मैं नियम और शर्तों से सहमत हूं",
+      "hasAccount": "पहले से खाता है?",
+      "signIn": "यहाँ साइन इन करें"
+    }
+  },
+  "complaint": {
+    "submit": {
+      "title": "नई शिकायत दर्ज करें",
+      "category": "श्रेणी",
+      "subject": "विषय",
+      "description": "विवरण",
+      "location": "स्थान",
+      "attachments": "अनुलग्नक",
+      "priority": "प्राथमिकता",
+      "categories": {
+        "sanitation": "स्वच्छता",
+        "infrastructure": "बुनियादी ढांचा",
+        "publicServices": "सार्वजनिक सेवाएं",
+        "utilities": "उपयोगिताएं",
+        "transportation": "परिवहन",
+        "other": "अन्य"
+      },
+      "priorities": {
+        "low": "कम",
+        "medium": "मध्यम",
+        "high": "उच्च",
+        "urgent": "तत्काल"
+      }
+    },
+    "track": {
+      "title": "शिकायत ट्रैक करें",
+      "enterComplaintId": "शिकायत आईडी दर्ज करें",
+      "trackButton": "शिकायत ट्रैक करें",
+      "status": "स्थिति",
+      "submittedOn": "जमा किया गया",
+      "lastUpdated": "अंतिम अपडेट",
+      "assignedTo": "सौंपा गया"
+    },
+    "status": {
+      "pending": "लंबित",
+      "inProgress": "प्रगति में",
+      "resolved": "हल हो गया",
+      "escalated": "बढ़ाया गया",
+      "closed": "बंद"
+    }
+  },
+  "suggestion": {
+    "submit": {
+      "title": "नया सुझाव दें",
+      "category": "श्रेणी",
+      "title": "शीर्षक",
+      "description": "विवरण"
+    },
+    "status": {
+      "active": "सक्रिय",
+      "under_review": "समीक्षाधीन",
+      "implemented": "लागू किया गया",
+      "rejected": "अस्वीकृत"
+    }
+  },
+  "dashboard": {
+    "welcome": "अपने डैशबोर्ड में आपका स्वागत है",
+    "myComplaints": "मेरी शिकायतें",
+    "mySuggestions": "मेरे सुझाव",
+    "recentActivity": "हाल की गतिविधि",
+    "statistics": "आंकड़े",
+    "totalComplaints": "कुल शिकायतें",
+    "totalSuggestions": "कुल सुझाव",
+    "pendingComplaints": "लंबित",
+    "resolvedComplaints": "हल हो गया",
+    "averageResolutionTime": "औसत समाधान समय"
+  }
+}

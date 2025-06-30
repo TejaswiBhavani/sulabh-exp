@@ -1,0 +1,158 @@
+{
+  "common": {
+    "submit": "জমা দিন",
+    "cancel": "বাতিল",
+    "save": "সংরক্ষণ",
+    "edit": "সম্পাদনা",
+    "delete": "মুছুন",
+    "search": "অনুসন্ধান",
+    "filter": "ফিল্টার",
+    "loading": "লোড হচ্ছে...",
+    "error": "ত্রুটি",
+    "success": "সফল",
+    "warning": "সতর্কতা",
+    "info": "তথ্য",
+    "yes": "হ্যাঁ",
+    "no": "না",
+    "back": "পিছনে",
+    "next": "পরবর্তী",
+    "previous": "পূর্ববর্তী",
+    "close": "বন্ধ"
+  },
+  "nav": {
+    "home": "হোম",
+    "dashboard": "ড্যাশবোর্ড",
+    "submitComplaint": "অভিযোগ জমা দিন",
+    "submitSuggestion": "পরামর্শ দিন",
+    "trackComplaint": "অভিযোগ ট্র্যাক করুন",
+    "suggestions": "পরামর্শ",
+    "login": "লগইন",
+    "register": "নিবন্ধন",
+    "signup": "সাইন আপ",
+    "logout": "লগআউট",
+    "profile": "প্রোফাইল",
+    "admin": "অ্যাডমিন প্যানেল",
+    "authority": "কর্তৃপক্ষ প্যানেল",
+    "reports": "রিপোর্ট",
+    "ngoDashboard": "এনজিও ড্যাশবোর্ড",
+    "settings": "সেটিংস"
+  },
+  "home": {
+    "title": "সুলভ",
+    "subtitle": "অনলাইন অভিযোগ নিষ্পত্তি ব্যবস্থা",
+    "description": "নাগরিকদের অভিযোগ জমা দেওয়া এবং ট্র্যাক করার জন্য সহজ এবং অ্যাক্সেসযোগ্য প্ল্যাটফর্ম",
+    "submitComplaint": "একটি অভিযোগ জমা দিন",
+    "submitSuggestion": "একটি পরামর্শ দিন",
+    "trackComplaint": "আপনার অভিযোগ ট্র্যাক করুন",
+    "publicDashboard": "পাবলিক ড্যাশবোর্ড",
+    "features": {
+      "title": "মূল বৈশিষ্ট্য",
+      "easy": {
+        "title": "ব্যবহার করা সহজ",
+        "description": "সকল ব্যবহারকারীর জন্য ডিজাইন করা সহজ এবং স্বজ্ঞাত ইন্টারফেস"
+      },
+      "track": {
+        "title": "রিয়েল-টাইম ট্র্যাকিং",
+        "description": "বিজ্ঞপ্তি সহ রিয়েল-টাইমে আপনার অভিযোগের অবস্থা ট্র্যাক করুন"
+      },
+      "multilingual": {
+        "title": "বহুভাষিক সহায়তা",
+        "description": "ভাল অ্যাক্সেসিবিলিটির জন্য একাধিক ভারতীয় ভাষায় উপলব্ধ"
+      },
+      "secure": {
+        "title": "নিরাপদ এবং ব্যক্তিগত",
+        "description": "আপনার ডেটা এন্টারপ্রাইজ-গ্রেড নিরাপত্তা দিয়ে সুরক্ষিত"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "সুলভে লগইন করুন",
+      "email": "ইমেইল ঠিকানা",
+      "password": "পাসওয়ার্ড",
+      "rememberMe": "আমাকে মনে রাখুন",
+      "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+      "noAccount": "অ্যাকাউন্ট নেই?",
+      "signUp": "এখানে সাইন আপ করুন"
+    },
+    "register": {
+      "title": "অ্যাকাউন্ট তৈরি করুন",
+      "firstName": "প্রথম নাম",
+      "lastName": "শেষ নাম",
+      "email": "ইমেইল ঠিকানা",
+      "phone": "ফোন নম্বর",
+      "password": "পাসওয়ার্ড",
+      "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
+      "agreeTerms": "আমি নিয়ম ও শর্তাবলীতে সম্মত",
+      "hasAccount": "ইতিমধ্যে অ্যাকাউন্ট আছে?",
+      "signIn": "এখানে সাইন ইন করুন"
+    }
+  },
+  "complaint": {
+    "submit": {
+      "title": "নতুন অভিযোগ জমা দিন",
+      "category": "বিভাগ",
+      "subject": "বিষয়",
+      "description": "বিবরণ",
+      "location": "অবস্থান",
+      "attachments": "সংযুক্তি",
+      "priority": "অগ্রাধিকার",
+      "categories": {
+        "sanitation": "স্যানিটেশন",
+        "infrastructure": "অবকাঠামো",
+        "publicServices": "পাবলিক সার্ভিস",
+        "utilities": "ইউটিলিটি",
+        "transportation": "পরিবহন",
+        "other": "অন্যান্য"
+      },
+      "priorities": {
+        "low": "কম",
+        "medium": "মাঝারি",
+        "high": "উচ্চ",
+        "urgent": "জরুরি"
+      }
+    },
+    "track": {
+      "title": "অভিযোগ ট্র্যাক করুন",
+      "enterComplaintId": "অভিযোগ আইডি লিখুন",
+      "trackButton": "অভিযোগ ট্র্যাক করুন",
+      "status": "অবস্থা",
+      "submittedOn": "জমা দেওয়া হয়েছে",
+      "lastUpdated": "শেষ আপডেট",
+      "assignedTo": "বরাদ্দ করা হয়েছে"
+    },
+    "status": {
+      "pending": "অপেক্ষমাণ",
+      "inProgress": "চলমান",
+      "resolved": "সমাধান হয়েছে",
+      "escalated": "বৃদ্ধি করা হয়েছে",
+      "closed": "বন্ধ"
+    }
+  },
+  "suggestion": {
+    "submit": {
+      "title": "নতুন পরামর্শ দিন",
+      "category": "বিভাগ",
+      "title": "শিরোনাম",
+      "description": "বিবরণ"
+    },
+    "status": {
+      "active": "সক্রিয়",
+      "under_review": "পর্যালোচনাধীন",
+      "implemented": "বাস্তবায়িত",
+      "rejected": "প্রত্যাখ্যাত"
+    }
+  },
+  "dashboard": {
+    "welcome": "আপনার ড্যাশবোর্ডে স্বাগতম",
+    "myComplaints": "আমার অভিযোগ",
+    "mySuggestions": "আমার পরামর্শ",
+    "recentActivity": "সাম্প্রতিক কার্যকলাপ",
+    "statistics": "পরিসংখ্যান",
+    "totalComplaints": "মোট অভিযোগ",
+    "totalSuggestions": "মোট পরামর্শ",
+    "pendingComplaints": "অপেক্ষমাণ",
+    "resolvedComplaints": "সমাধান হয়েছে",
+    "averageResolutionTime": "গড় সমাধানের সময়"
+  }
+}

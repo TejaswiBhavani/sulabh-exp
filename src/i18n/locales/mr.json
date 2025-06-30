@@ -1,0 +1,158 @@
+{
+  "common": {
+    "submit": "सबमिट करा",
+    "cancel": "रद्द करा",
+    "save": "जतन करा",
+    "edit": "संपादित करा",
+    "delete": "हटवा",
+    "search": "शोधा",
+    "filter": "फिल्टर",
+    "loading": "लोड होत आहे...",
+    "error": "त्रुटी",
+    "success": "यश",
+    "warning": "चेतावणी",
+    "info": "माहिती",
+    "yes": "होय",
+    "no": "नाही",
+    "back": "मागे",
+    "next": "पुढे",
+    "previous": "मागील",
+    "close": "बंद करा"
+  },
+  "nav": {
+    "home": "होम",
+    "dashboard": "डॅशबोर्ड",
+    "submitComplaint": "तक्रार नोंदवा",
+    "submitSuggestion": "सूचना द्या",
+    "trackComplaint": "तक्रार ट्रॅक करा",
+    "suggestions": "सूचना",
+    "login": "लॉगिन",
+    "register": "नोंदणी",
+    "signup": "साइन अप",
+    "logout": "लॉगआउट",
+    "profile": "प्रोफाइल",
+    "admin": "अॅडमिन पॅनेल",
+    "authority": "प्राधिकरण पॅनेल",
+    "reports": "अहवाल",
+    "ngoDashboard": "एनजीओ डॅशबोर्ड",
+    "settings": "सेटिंग्ज"
+  },
+  "home": {
+    "title": "सुलभ",
+    "subtitle": "ऑनलाइन तक्रार निवारण प्रणाली",
+    "description": "नागरिकांसाठी तक्रार नोंदवण्यासाठी आणि ट्रॅक करण्यासाठी सोपे आणि प्रवेशयोग्य प्लॅटफॉर्म",
+    "submitComplaint": "तक्रार नोंदवा",
+    "submitSuggestion": "सूचना द्या",
+    "trackComplaint": "तुमची तक्रार ट्रॅक करा",
+    "publicDashboard": "सार्वजनिक डॅशबोर्ड",
+    "features": {
+      "title": "मुख्य वैशिष्ट्ये",
+      "easy": {
+        "title": "वापरण्यास सोपे",
+        "description": "सर्व वापरकर्त्यांसाठी डिझाइन केलेले सोपे आणि सहज इंटरफेस"
+      },
+      "track": {
+        "title": "रिअल-टाइम ट्रॅकिंग",
+        "description": "सूचनांसह रिअल-टाइममध्ये तुमच्या तक्रारीची स्थिती ट्रॅक करा"
+      },
+      "multilingual": {
+        "title": "बहुभाषिक समर्थन",
+        "description": "चांगल्या प्रवेशयोग्यतेसाठी अनेक भारतीय भाषांमध्ये उपलब्ध"
+      },
+      "secure": {
+        "title": "सुरक्षित आणि खाजगी",
+        "description": "तुमचा डेटा एंटरप्राइझ-ग्रेड सुरक्षेसह संरक्षित आहे"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "सुलभमध्ये लॉगिन करा",
+      "email": "ईमेल पत्ता",
+      "password": "पासवर्ड",
+      "rememberMe": "मला लक्षात ठेवा",
+      "forgotPassword": "पासवर्ड विसरलात?",
+      "noAccount": "खाते नाही?",
+      "signUp": "येथे साइन अप करा"
+    },
+    "register": {
+      "title": "खाते तयार करा",
+      "firstName": "पहिले नाव",
+      "lastName": "आडनाव",
+      "email": "ईमेल पत्ता",
+      "phone": "फोन नंबर",
+      "password": "पासवर्ड",
+      "confirmPassword": "पासवर्डची पुष्टी करा",
+      "agreeTerms": "मी अटी आणि शर्तींशी सहमत आहे",
+      "hasAccount": "आधीच खाते आहे?",
+      "signIn": "येथे साइन इन करा"
+    }
+  },
+  "complaint": {
+    "submit": {
+      "title": "नवीन तक्रार नोंदवा",
+      "category": "श्रेणी",
+      "subject": "विषय",
+      "description": "वर्णन",
+      "location": "स्थान",
+      "attachments": "संलग्नक",
+      "priority": "प्राधान्य",
+      "categories": {
+        "sanitation": "स्वच्छता",
+        "infrastructure": "पायाभूत सुविधा",
+        "publicServices": "सार्वजनिक सेवा",
+        "utilities": "उपयोगिता",
+        "transportation": "वाहतूक",
+        "other": "इतर"
+      },
+      "priorities": {
+        "low": "कमी",
+        "medium": "मध्यम",
+        "high": "उच्च",
+        "urgent": "तातडीचे"
+      }
+    },
+    "track": {
+      "title": "तक्रार ट्रॅक करा",
+      "enterComplaintId": "तक्रार आयडी प्रविष्ट करा",
+      "trackButton": "तक्रार ट्रॅक करा",
+      "status": "स्थिती",
+      "submittedOn": "सबमिट केले",
+      "lastUpdated": "शेवटचे अपडेट",
+      "assignedTo": "नियुक्त केले"
+    },
+    "status": {
+      "pending": "प्रलंबित",
+      "inProgress": "प्रगतीत",
+      "resolved": "निराकरण झाले",
+      "escalated": "वाढवले",
+      "closed": "बंद"
+    }
+  },
+  "suggestion": {
+    "submit": {
+      "title": "नवीन सूचना द्या",
+      "category": "श्रेणी",
+      "title": "शीर्षक",
+      "description": "वर्णन"
+    },
+    "status": {
+      "active": "सक्रिय",
+      "under_review": "पुनरावलोकनाधीन",
+      "implemented": "अंमलबजावणी",
+      "rejected": "नाकारले"
+    }
+  },
+  "dashboard": {
+    "welcome": "तुमच्या डॅशबोर्डमध्ये स्वागत आहे",
+    "myComplaints": "माझ्या तक्रारी",
+    "mySuggestions": "माझ्या सूचना",
+    "recentActivity": "अलीकडील क्रियाकलाप",
+    "statistics": "आकडेवारी",
+    "totalComplaints": "एकूण तक्रारी",
+    "totalSuggestions": "एकूण सूचना",
+    "pendingComplaints": "प्रलंबित",
+    "resolvedComplaints": "निराकरण झाले",
+    "averageResolutionTime": "सरासरी निराकरण वेळ"
+  }
+}

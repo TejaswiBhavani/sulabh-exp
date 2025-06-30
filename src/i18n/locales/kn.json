@@ -1,0 +1,158 @@
+{
+  "common": {
+    "submit": "ಸಲ್ಲಿಸಿ",
+    "cancel": "ರದ್ದುಮಾಡಿ",
+    "save": "ಉಳಿಸಿ",
+    "edit": "ಸಂಪಾದಿಸಿ",
+    "delete": "ಅಳಿಸಿ",
+    "search": "ಹುಡುಕಿ",
+    "filter": "ಫಿಲ್ಟರ್",
+    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "error": "ದೋಷ",
+    "success": "ಯಶಸ್ಸು",
+    "warning": "ಎಚ್ಚರಿಕೆ",
+    "info": "ಮಾಹಿತಿ",
+    "yes": "ಹೌದು",
+    "no": "ಇಲ್ಲ",
+    "back": "ಹಿಂದೆ",
+    "next": "ಮುಂದೆ",
+    "previous": "ಹಿಂದಿನ",
+    "close": "ಮುಚ್ಚಿ"
+  },
+  "nav": {
+    "home": "ಮುಖ್ಯಪುಟ",
+    "dashboard": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "submitComplaint": "ದೂರು ಸಲ್ಲಿಸಿ",
+    "submitSuggestion": "ಸಲಹೆ ಸಲ್ಲಿಸಿ",
+    "trackComplaint": "ದೂರು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ",
+    "suggestions": "ಸಲಹೆಗಳು",
+    "login": "ಲಾಗಿನ್",
+    "register": "ನೋಂದಣಿ",
+    "signup": "ಸೈನ್ ಅಪ್",
+    "logout": "ಲಾಗ್ ಔಟ್",
+    "profile": "ಪ್ರೊಫೈಲ್",
+    "admin": "ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್",
+    "authority": "ಅಧಿಕಾರಿ ಪ್ಯಾನೆಲ್",
+    "reports": "ವರದಿಗಳು",
+    "ngoDashboard": "ಎನ್‌ಜಿಓ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
+  },
+  "home": {
+    "title": "ಸುಲಭ್",
+    "subtitle": "ಆನ್‌ಲೈನ್ ದೂರು ಪರಿಹಾರ ವ್ಯವಸ್ಥೆ",
+    "description": "ನಾಗರಿಕರು ದೂರುಗಳನ್ನು ಸಲ್ಲಿಸಲು ಮತ್ತು ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಸುಲಭ ಮತ್ತು ಪ್ರವೇಶಿಸಬಹುದಾದ ವೇದಿಕೆ",
+    "submitComplaint": "ದೂರು ಸಲ್ಲಿಸಿ",
+    "submitSuggestion": "ಸಲಹೆ ಸಲ್ಲಿಸಿ",
+    "trackComplaint": "ನಿಮ್ಮ ದೂರು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ",
+    "publicDashboard": "ಸಾರ್ವಜನಿಕ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+    "features": {
+      "title": "ಮುಖ್ಯ ವೈಶಿಷ್ಟ್ಯಗಳು",
+      "easy": {
+        "title": "ಬಳಸಲು ಸುಲಭ",
+        "description": "ಎಲ್ಲಾ ಬಳಕೆದಾರರಿಗಾಗಿ ವಿನ್ಯಾಸಗೊಳಿಸಲಾದ ಸರಳ ಮತ್ತು ಅರ್ಥಗರ್ಭಿತ ಇಂಟರ್‌ಫೇಸ್"
+      },
+      "track": {
+        "title": "ನೈಜ-ಸಮಯ ಟ್ರ್ಯಾಕಿಂಗ್",
+        "description": "ಅಧಿಸೂಚನೆಗಳೊಂದಿಗೆ ನಿಮ್ಮ ದೂರಿನ ಸ್ಥಿತಿಯನ್ನು ನೈಜ-ಸಮಯದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ"
+      },
+      "multilingual": {
+        "title": "ಬಹುಭಾಷಾ ಬೆಂಬಲ",
+        "description": "ಉತ್ತಮ ಪ್ರವೇಶಕ್ಕಾಗಿ ಅನೇಕ ಭಾರತೀಯ ಭಾಷೆಗಳಲ್ಲಿ ಲಭ್ಯವಿದೆ"
+      },
+      "secure": {
+        "title": "ಸುರಕ್ಷಿತ ಮತ್ತು ಖಾಸಗಿ",
+        "description": "ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಎಂಟರ್‌ಪ್ರೈಸ್-ಗ್ರೇಡ್ ಭದ್ರತೆಯೊಂದಿಗೆ ರಕ್ಷಿಸಲಾಗಿದೆ"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ಸುಲಭ್‌ಗೆ ಲಾಗಿನ್ ಮಾಡಿ",
+      "email": "ಇಮೇಲ್ ವಿಳಾಸ",
+      "password": "ಪಾಸ್‌ವರ್ಡ್",
+      "rememberMe": "ನನ್ನನ್ನು ನೆನಪಿಡಿ",
+      "forgotPassword": "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?",
+      "noAccount": "ಖಾತೆ ಇಲ್ಲವೇ?",
+      "signUp": "ಇಲ್ಲಿ ಸೈನ್ ಅಪ್ ಮಾಡಿ"
+    },
+    "register": {
+      "title": "ಖಾತೆ ರಚಿಸಿ",
+      "firstName": "ಮೊದಲ ಹೆಸರು",
+      "lastName": "ಕೊನೆಯ ಹೆಸರು",
+      "email": "ಇಮೇಲ್ ವಿಳಾಸ",
+      "phone": "ಫೋನ್ ಸಂಖ್ಯೆ",
+      "password": "ಪಾಸ್‌ವರ್ಡ್",
+      "confirmPassword": "ಪಾಸ್‌ವರ್ಡ್ ದೃಢೀಕರಿಸಿ",
+      "agreeTerms": "ನಾನು ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳನ್ನು ಒಪ್ಪುತ್ತೇನೆ",
+      "hasAccount": "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?",
+      "signIn": "ಇಲ್ಲಿ ಸೈನ್ ಇನ್ ಮಾಡಿ"
+    }
+  },
+  "complaint": {
+    "submit": {
+      "title": "ಹೊಸ ದೂರು ಸಲ್ಲಿಸಿ",
+      "category": "ವರ್ಗ",
+      "subject": "ವಿಷಯ",
+      "description": "ವಿವರಣೆ",
+      "location": "ಸ್ಥಳ",
+      "attachments": "ಲಗತ್ತುಗಳು",
+      "priority": "ಆದ್ಯತೆ",
+      "categories": {
+        "sanitation": "ನೈರ್ಮಲ್ಯ",
+        "infrastructure": "ಮೂಲಸೌಕರ್ಯ",
+        "publicServices": "ಸಾರ್ವಜನಿಕ ಸೇವೆಗಳು",
+        "utilities": "ಉಪಯೋಗಗಳು",
+        "transportation": "ಸಾರಿಗೆ",
+        "other": "ಇತರೆ"
+      },
+      "priorities": {
+        "low": "ಕಡಿಮೆ",
+        "medium": "ಮಧ್ಯಮ",
+        "high": "ಹೆಚ್ಚು",
+        "urgent": "ತುರ್ತು"
+      }
+    },
+    "track": {
+      "title": "ದೂರು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ",
+      "enterComplaintId": "ದೂರು ID ನಮೂದಿಸಿ",
+      "trackButton": "ದೂರು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ",
+      "status": "ಸ್ಥಿತಿ",
+      "submittedOn": "ಸಲ್ಲಿಸಲಾಗಿದೆ",
+      "lastUpdated": "ಕೊನೆಯ ನವೀಕರಣ",
+      "assignedTo": "ನಿಯೋಜಿಸಲಾಗಿದೆ"
+    },
+    "status": {
+      "pending": "ಬಾಕಿ",
+      "inProgress": "ಪ್ರಗತಿಯಲ್ಲಿ",
+      "resolved": "ಪರಿಹರಿಸಲಾಗಿದೆ",
+      "escalated": "ಹೆಚ್ಚಿಸಲಾಗಿದೆ",
+      "closed": "ಮುಚ್ಚಲಾಗಿದೆ"
+    }
+  },
+  "suggestion": {
+    "submit": {
+      "title": "ಹೊಸ ಸಲಹೆ ಸಲ್ಲಿಸಿ",
+      "category": "ವರ್ಗ",
+      "title": "ಶೀರ್ಷಿಕೆ",
+      "description": "ವಿವರಣೆ"
+    },
+    "status": {
+      "active": "ಸಕ್ರಿಯ",
+      "under_review": "ಪರಿಶೀಲನೆಯಲ್ಲಿ",
+      "implemented": "ಅನುಷ್ಠಾನಗೊಂಡಿದೆ",
+      "rejected": "ತಿರಸ್ಕರಿಸಲಾಗಿದೆ"
+    }
+  },
+  "dashboard": {
+    "welcome": "ನಿಮ್ಮ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಸ್ವಾಗತ",
+    "myComplaints": "ನನ್ನ ದೂರುಗಳು",
+    "mySuggestions": "ನನ್ನ ಸಲಹೆಗಳು",
+    "recentActivity": "ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ",
+    "statistics": "ಅಂಕಿಅಂಶಗಳು",
+    "totalComplaints": "ಒಟ್ಟು ದೂರುಗಳು",
+    "totalSuggestions": "ಒಟ್ಟು ಸಲಹೆಗಳು",
+    "pendingComplaints": "ಬಾಕಿ",
+    "resolvedComplaints": "ಪರಿಹರಿಸಲಾಗಿದೆ",
+    "averageResolutionTime": "ಸರಾಸರಿ ಪರಿಹಾರ ಸಮಯ"
+  }
+}
