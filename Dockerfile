@@ -1,8 +1,18 @@
-FROM python:3
-RUN pip install django==3.2
+# Use Node.js base image
+FROM node:18
 
+# Set working directory
+WORKDIR /app
+
+# Copy dependency files and install
+COPY package*.json ./
+RUN npm install
+
+# Copy all other files
 COPY . .
 
-RUN python manage.py migrate
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Expose the app port
+EXPOSE 3000
+
+# Start the app
+CMD ["node", "server.js"]
