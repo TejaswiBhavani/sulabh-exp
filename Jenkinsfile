@@ -72,7 +72,7 @@ pipeline {
         failure {
             mail(
                 to: 'dev-team@municipal.gov',
-                subject: "❌ Grievance UI Build Failed (#${env.BUILD_NUMBER})",
+                subject: "Grievance UI Build Failed (#${env.BUILD_NUMBER})",
                 body: "Investigate: ${env.BUILD_URL}"
             )
         }
