@@ -1,20 +1,41 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '../types/database'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
-  console.warn('Supabase environment variables not configured. Using placeholder values for development.')
+// Check if environment variables are configured with valid values
+export const isSupabaseConfigured = !!(
+  supabaseUrl && 
+  supabaseAnonKey && 
+  supabaseUrl !== 'your_supabase_project_url' &&
+  supabaseAnonKey !== 'your_supabase_anon_key' &&
+  supabaseUrl.startsWith('https://') &&
+  supabaseUrl.includes('.supabase.co')
+)
+
+if (!isSupabaseConfigured) {
+  console.warn('⚠️ Supabase environment variables not configured properly.')
+  console.warn('📋 To fix this:')
+  console.warn('   1. Update the .env file with your actual Supabase project credentials')
+  console.warn('   2. Get your credentials from: https://supabase.com/dashboard > Your Project > Settings > API')
+  console.warn('   3. Replace VITE_SUPABASE_URL with your Project URL')
+  console.warn('   4. Replace VITE_SUPABASE_ANON_KEY with your anon/public key')
+  console.warn('   5. Restart the development server')
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
+// Create client with safe fallback values that won't cause URL construction errors
+export const supabase = createClient<Database>(
+  isSupabaseConfigured ? supabaseUrl : 'https://placeholder.supabase.co',
+  isSupabaseConfigured ? supabaseAnonKey : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDk3NDA4MDAsImV4cCI6MTk2NTM0ODgwMH0.placeholder',
+  {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
+    }
   }
-})
+)
 
 // Helper function to get current user profile
 export const getCurrentUserProfile = async () => {

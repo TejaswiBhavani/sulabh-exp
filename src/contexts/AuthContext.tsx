@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { User as SupabaseUser, Session } from '@supabase/supabase-js'
-import { supabase, getCurrentUserProfile } from '../lib/supabase'
+import { supabase, getCurrentUserProfile, isSupabaseConfigured } from '../lib/supabase'
 import { User, AuthContextType, RegisterData } from '../types'
 import toast from 'react-hot-toast'
 
@@ -27,12 +27,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Get initial session
     const getInitialSession = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession()
-        setSession(session)
-        
-        if (session?.user) {
-          await loadUserProfile(session.user)
+        // Only attempt to get session if Supabase is configured
+        if (isSupabaseConfigured) {
+          const { data: { session } } = await supabase.auth.getSession()
+          setSession(session)
+          
+          if (session?.user) {
+            await loadUserProfile(session.user)
+          } else {
+            setUser(null)
+          }
         } else {
+          // No configuration available, set defaults
+          setSession(null)
           setUser(null)
         }
       } catch (error) {
@@ -44,23 +51,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     getInitialSession()
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session)
-      
-      if (event === 'SIGNED_IN' && session?.user) {
-        await loadUserProfile(session.user)
-      } else if (event === 'SIGNED_OUT') {
-        setUser(null)
-      } else if (event === 'USER_UPDATED' && session?.user) {
-        await loadUserProfile(session.user)
-      }
-      // According to the TS error (TS2367), 'USER_DELETED' is not a recognized AuthChangeEvent here.
-      // Handling for user deletion, if necessary via auth events, would require the event type to support it.
-      // For now, SIGNED_OUT should cover the user becoming null.
-    })
+    // Only set up auth state listener if Supabase is configured
+    let subscription: any = null
+    if (isSupabaseConfigured) {
+      // Listen for auth changes
+      const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        setSession(session)
+        
+        if (event === 'SIGNED_IN' && session?.user) {
+          await loadUserProfile(session.user)
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null)
+        } else if (event === 'USER_UPDATED' && session?.user) {
+          await loadUserProfile(session.user)
+        }
+        // According to the TS error (TS2367), 'USER_DELETED' is not a recognized AuthChangeEvent here.
+        // Handling for user deletion, if necessary via auth events, would require the event type to support it.
+        // For now, SIGNED_OUT should cover the user becoming null.
+      })
+      subscription = authSubscription
+    }
 
-    return () => subscription.unsubscribe()
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe()
+      }
+    }
   }, [])
 
   const loadUserProfile = async (supabaseUser: SupabaseUser) => {
@@ -103,6 +119,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (identifier: string, password: string, rememberMe: boolean = false): Promise<void> => {
     setLoading(true)
     try {
+      // Check if Supabase is properly configured
+      if (!isSupabaseConfigured) {
+        throw new Error(
+          'Authentication service is not configured. Please contact the administrator or check your environment setup.'
+        )
+      }
+      
       // Determine if the identifier is an email or username
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier)
       
@@ -162,6 +185,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (userData: RegisterData): Promise<void> => {
     setLoading(true)
     try {
+      // Check if Supabase is properly configured
+      if (!isSupabaseConfigured) {
+        throw new Error(
+          'Authentication service is not configured. Please contact the administrator or check your environment setup.'
+        )
+      }
+      
       // Check if username already exists
       const { data: existingUsers, error: usernameCheckError } = await supabase
         .from('profiles')
