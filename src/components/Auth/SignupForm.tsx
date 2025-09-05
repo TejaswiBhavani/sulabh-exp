@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Eye, EyeOff, User, Mail, Phone, Lock, AlertCircle, CheckCircle } from 'lucide-react'
-import { supabase } from '../../lib/supabase'
-import toast from 'react-hot-toast'
+import { useRegister } from '../../hooks/useRegister'
 
 // Define the form schema with Zod
 const signupSchema = z.object({
@@ -34,12 +33,11 @@ const signupSchema = z.object({
 type SignupFormData = z.infer<typeof signupSchema>
 
 const SignupForm: React.FC = () => {
-  const navigate = useNavigate()
+  const { registerUser, loading, error: registerError } = useRegister()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
 
   const {
@@ -89,67 +87,20 @@ const SignupForm: React.FC = () => {
     try {
       setError('')
       setSuccess('')
-      setIsSubmitting(true)
-
-      // Check if username already exists
-      const { data: existingUsers, error: usernameCheckError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('username', data.username)
-        .limit(1)
-
-      if (usernameCheckError && !usernameCheckError.message.includes('row-level security')) {
-        throw usernameCheckError
-      }
-
-      if (existingUsers && existingUsers.length > 0) {
-        setError('Username is already taken. Please choose another one.')
-        setIsSubmitting(false)
-        return
-      }
-
-      // Sign up with Supabase Auth - the trigger will handle profile creation
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
+      
+      await registerUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        username: data.username,
         email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            username: data.username,
-            phone: data.phone || null
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
-        }
+        phone: data.phone,
+        password: data.password
       })
-
-      if (signUpError) {
-        // Handle specific error cases
-        if (signUpError.message.includes('already registered')) {
-          throw new Error('This email is already registered. Please log in instead.')
-        }
-        throw signUpError
-      }
-
-      if (authData.user) {
-        setSuccess('Account created successfully! Please check your email to verify your account.')
-        toast.success('Account created successfully!')
-        
-        // Redirect after a delay
-        setTimeout(() => {
-          navigate('/login', { 
-            state: { 
-              message: 'Please check your email to verify your account before logging in.' 
-            } 
-          })
-        }, 3000)
-      }
+      
+      setSuccess('Account created successfully! Please check your email to verify your account.')
     } catch (err: any) {
       console.error('Signup error:', err)
       setError(err.message || 'Failed to create account. Please try again.')
-      toast.error('Failed to create account')
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
@@ -160,10 +111,10 @@ const SignupForm: React.FC = () => {
         <p className="text-gray-600 mt-2">Join SULABH to submit and track your grievances</p>
       </div>
 
-      {error && (
+      {(error || registerError) && (
         <div className="mb-6 bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg flex items-center space-x-2">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
-          <span>{error}</span>
+          <span>{error || registerError}</span>
         </div>
       )}
 
@@ -388,10 +339,10 @@ const SignupForm: React.FC = () => {
         <div>
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={loading}
             className="w-full btn-primary flex justify-center items-center"
           >
-            {isSubmitting ? (
+            {loading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
             ) : (
               'Create Account'

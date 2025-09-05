@@ -76,15 +76,15 @@ export const useRegister = () => {
         .limit(1)
 
       if (usernameCheckError) {
-        console.error('Username check error:', usernameCheckError)
-        throw new Error('Error checking username availability')
-      }
-
-      if (existingUsers && existingUsers.length > 0) {
+        // If it's an RLS error, we can't check existing usernames before signup
+        // This is expected behavior when RLS is properly configured
+        console.log('Username check error (expected with RLS):', usernameCheckError.message)
+        // Continue with signup - the profile creation will handle username uniqueness via constraints
+      } else if (existingUsers && existingUsers.length > 0) {
         throw new Error('Username is already taken. Please choose another one.')
       }
       
-      console.log('Username is available, proceeding with auth signup')
+      console.log('Proceeding with auth signup')
 
       // Sign up with Supabase Auth
       const { data, error } = await supabase.auth.signUp({
