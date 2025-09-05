@@ -56,7 +56,7 @@ export const useRegister = () => {
         } else {
           // Check field-specific errors
           for (const key in formattedErrors) {
-            if (key !== '_errors' && formattedErrors.hasOwnProperty(key)) {
+            if (key !== '_errors' && Object.prototype.hasOwnProperty.call(formattedErrors, key)) {
               const fieldErrorObject = (formattedErrors as any)[key];
               if (fieldErrorObject && fieldErrorObject._errors && fieldErrorObject._errors.length > 0) {
                 errorMessage = fieldErrorObject._errors[0];
