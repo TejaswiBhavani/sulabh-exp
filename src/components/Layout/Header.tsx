@@ -5,6 +5,7 @@ import { Menu, X, LogOut, Settings } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import LanguageSwitcher from '../Common/LanguageSwitcher'
 import NotificationBell from '../Common/NotificationBell'
+import { isSupabaseConfigured } from '../../lib/supabase'
 import { LotusIcon } from '../Common/CulturalElements'
 
 const Header: React.FC = () => {
@@ -88,6 +89,14 @@ const Header: React.FC = () => {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
+            {/* Supabase Connection Status */}
+            {!isSupabaseConfigured && (
+              <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-warning-100 text-warning-800 rounded-lg text-sm">
+                <span className="w-2 h-2 bg-warning-600 rounded-full animate-pulse"></span>
+                <span>Demo Mode</span>
+              </div>
+            )}
+            
             <LanguageSwitcher />
             
             {user && <NotificationBell />}

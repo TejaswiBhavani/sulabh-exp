@@ -11,8 +11,10 @@ import {
   CheckCircle,
   ArrowRight,
   Users,
-  TrendingUp
+  TrendingUp,
+  AlertTriangle
 } from 'lucide-react'
+import { isSupabaseConfigured } from '../lib/supabase'
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation()
@@ -49,6 +51,20 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
+      {/* Demo Mode Banner */}
+      {!isSupabaseConfigured && (
+        <div className="bg-warning-50 border-b border-warning-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-center space-x-3">
+              <AlertTriangle className="w-5 h-5 text-warning-600" />
+              <span className="text-warning-800 font-medium">
+                Demo Mode Active - Connect to Supabase for full functionality
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

@@ -15,13 +15,10 @@ export const isSupabaseConfigured = !!(
 )
 
 if (!isSupabaseConfigured) {
-  console.warn('⚠️ Supabase environment variables not configured properly.')
-  console.warn('📋 To fix this:')
-  console.warn('   1. Update the .env file with your actual Supabase project credentials')
-  console.warn('   2. Get your credentials from: https://supabase.com/dashboard > Your Project > Settings > API')
-  console.warn('   3. Replace VITE_SUPABASE_URL with your Project URL')
-  console.warn('   4. Replace VITE_SUPABASE_ANON_KEY with your anon/public key')
-  console.warn('   5. Restart the development server')
+  console.warn('⚠️ Supabase not configured - using demo mode')
+  console.warn('📋 To enable full functionality:')
+  console.warn('   1. Click "Connect to Supabase" button in the top right')
+  console.warn('   2. Or manually update .env with your Supabase credentials')
 }
 
 // Create client with safe fallback values that won't cause URL construction errors

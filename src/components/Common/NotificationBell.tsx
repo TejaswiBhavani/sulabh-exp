@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Bell, X, Check, CheckCheck, Trash2 } from 'lucide-react'
 import { useNotifications } from '../../contexts/NotificationContext'
 import { formatDistanceToNow } from 'date-fns'
+import { isSupabaseConfigured } from '../../lib/supabase'
 
 const NotificationBell: React.FC = () => {
   const { 
@@ -13,6 +14,11 @@ const NotificationBell: React.FC = () => {
     loading 
   } = useNotifications()
   const [isOpen, setIsOpen] = useState(false)
+
+  // Don't render notification bell in demo mode
+  if (!isSupabaseConfigured) {
+    return null
+  }
 
   const handleMarkAsRead = async (notificationId: string) => {
     try {

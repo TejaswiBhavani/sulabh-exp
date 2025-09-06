@@ -27,8 +27,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Get initial session
     const getInitialSession = async () => {
       try {
-        // Only attempt to get session if Supabase is configured
         if (isSupabaseConfigured) {
+          // Only attempt to get session if Supabase is configured
           const { data: { session } } = await supabase.auth.getSession()
           setSession(session)
           
@@ -38,9 +38,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(null)
           }
         } else {
-          // No configuration available, set defaults
+          // Check for demo session
+          const demoSession = localStorage.getItem('demo_session')
+          if (demoSession) {
+            const session = JSON.parse(demoSession)
+            if (session.expires_at > Date.now()) {
+              setUser(session.user)
+            } else {
+              localStorage.removeItem('demo_session')
+              localStorage.removeItem('demo_user')
+            }
+          }
           setSession(null)
-          setUser(null)
         }
       } catch (error) {
         console.error('Error getting initial session:', error)
@@ -121,9 +130,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       // Check if Supabase is properly configured
       if (!isSupabaseConfigured) {
-        throw new Error(
-          'Authentication service is not configured. Please contact the administrator or check your environment setup.'
-        )
+        // In demo mode, check for demo user
+        const demoUser = localStorage.getItem('demo_user')
+        if (demoUser && (identifier === JSON.parse(demoUser).email || identifier === JSON.parse(demoUser).username)) {
+          const user = JSON.parse(demoUser)
+          setUser(user)
+          localStorage.setItem('demo_session', JSON.stringify({ user, expires_at: Date.now() + 24 * 60 * 60 * 1000 }))
+          toast.success('Demo login successful! (Connect to Supabase for full functionality)')
+          return
+        } else {
+          throw new Error('Demo user not found. Please register first or connect to Supabase.')
+        }
       }
       
       // Determine if the identifier is an email or username
@@ -187,9 +204,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       // Check if Supabase is properly configured
       if (!isSupabaseConfigured) {
-        throw new Error(
-          'Authentication service is not configured. Please contact the administrator or check your environment setup.'
-        )
+        // In demo mode, simulate successful registration
+        console.log('Demo mode: Simulating user registration for:', userData.email)
+        
+        // Create a mock user for demo purposes
+        const mockUser: User = {
+          id: `demo-${Date.now()}`,
+          email: userData.email,
+          username: userData.username,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          phone: userData.phone,
+          role: 'citizen',
+          isVerified: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+        
+        // Store in localStorage for demo persistence
+        localStorage.setItem('demo_user', JSON.stringify(mockUser))
+        localStorage.setItem('demo_session', JSON.stringify({ user: mockUser, expires_at: Date.now() + 24 * 60 * 60 * 1000 }))
+        
+        setUser(mockUser)
+        toast.success('Demo account created successfully! (Connect to Supabase for full functionality)')
+        return
       }
       
       // Check if username already exists
@@ -275,7 +313,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      await supabase.auth.signOut()
+      if (isSupabaseConfigured) {
+        await supabase.auth.signOut()
+      } else {
+        // Clear demo session
+        localStorage.removeItem('demo_session')
+        localStorage.removeItem('demo_user')
+      }
       setUser(null)
       toast.success('Logged out successfully')
     } catch (error) {

@@ -35,6 +35,15 @@ export const ComplaintProvider: React.FC<ComplaintProviderProps> = ({ children }
   const loadComplaints = async () => {
     if (!user) return
 
+    // In demo mode, load from localStorage
+    if (!isSupabaseConfigured) {
+      const demoComplaints = JSON.parse(localStorage.getItem('demo_complaints') || '[]')
+      const userComplaints = demoComplaints.filter((c: any) => c.userId === user.id)
+      setComplaints(userComplaints)
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     try {
       // Try to get complaints from cache first
@@ -113,6 +122,37 @@ export const ComplaintProvider: React.FC<ComplaintProviderProps> = ({ children }
 
   const submitComplaint = async (complaintData: Omit<Complaint, 'id' | 'userId' | 'submittedAt' | 'updatedAt' | 'updates'>): Promise<string> => {
     if (!user) throw new Error('User not authenticated')
+
+    // In demo mode, simulate complaint submission
+    if (!isSupabaseConfigured) {
+      const mockComplaintId = `demo-complaint-${Date.now()}`
+      
+      const mockComplaint: Complaint = {
+        id: mockComplaintId,
+        userId: user.id,
+        ...complaintData,
+        submittedAt: new Date(),
+        updatedAt: new Date(),
+        updates: [{
+          id: `update-${Date.now()}`,
+          complaintId: mockComplaintId,
+          message: 'Complaint submitted successfully',
+          status: complaintData.status,
+          updatedBy: user.id,
+          updatedAt: new Date()
+        }]
+      }
+      
+      // Store in localStorage for demo
+      const existingComplaints = JSON.parse(localStorage.getItem('demo_complaints') || '[]')
+      existingComplaints.push(mockComplaint)
+      localStorage.setItem('demo_complaints', JSON.stringify(existingComplaints))
+      
+      // Update state
+      setComplaints(prev => [mockComplaint, ...prev])
+      
+      return mockComplaintId
+    }
 
     setLoading(true)
     try {

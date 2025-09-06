@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Eye, EyeOff, User, Lock, AlertCircle, Clock } from 'lucide-react'
-import { supabase, checkRateLimit, getRemainingLockoutTime } from '../../lib/supabase'
+import { checkRateLimit, getRemainingLockoutTime } from '../../lib/supabase'
+import { useAuth } from '../../contexts/AuthContext'
 import toast from 'react-hot-toast'
 
 // Define the form schema with Zod
@@ -19,6 +20,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 const LoginForm: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { login } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -77,59 +79,13 @@ const LoginForm: React.FC = () => {
         return
       }
 
-      // Determine if the identifier is an email or username
-      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier)
+      // Use the login method from AuthContext which handles both Supabase and demo mode
+      await login(identifier, data.password, data.rememberMe || false)
       
-      let authResponse
-      
-      if (isEmail) {
-        // Login with email
-        authResponse = await supabase.auth.signInWithPassword({
-          email: identifier,
-          password: data.password
-        })
-      } else {
-        // Login with username - first get the email associated with the username
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('email')
-          .eq('username', identifier)
-        
-        // Check if profile data exists and has at least one record
-        if (profileError || !profileData || profileData.length === 0) {
-          throw new Error('Invalid username or password')
-        }
-        
-        // Then login with the email
-        authResponse = await supabase.auth.signInWithPassword({
-          email: profileData[0].email,
-          password: data.password
-        })
-      }
-      
-      const { error: signInError } = authResponse
-      
-      if (signInError) {
-        if (signInError.message.includes('Email not confirmed')) {
-          throw new Error('Please verify your email address before logging in.')
-        }
-        throw signInError
-      }
-      
-      // Set session persistence based on "Remember me" option
-      if (!data.rememberMe) {
-        // If "Remember me" is not checked, set session expiry to 1 day
-        await supabase.auth.updateUser({
-          data: { session_expiry: '1d' }
-        })
-      }
-      
-      toast.success('Logged in successfully!')
       navigate('/dashboard')
     } catch (err: any) {
       console.error('Login error:', err)
       setError(err.message || 'Invalid username or password')
-      toast.error('Login failed')
     } finally {
       setIsSubmitting(false)
     }

@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Eye, EyeOff, User, Mail, Phone, Lock, AlertCircle } from 'lucide-react'
 import { useRegister } from '../../hooks/useRegister'
+import { isSupabaseConfigured } from '../../lib/supabase'
 import PasswordStrengthMeter from './PasswordStrengthMeter'
 
 // Define the form schema with Zod
@@ -64,7 +65,11 @@ const RegisterForm: React.FC = () => {
     } catch (err: any) {
       setFormError(err.message || 'Registration failed. Please try again.')
     }
-  }
+      if (isSupabaseConfigured) {
+        setSuccess('Account created successfully! Please check your email to verify your account.')
+      } else {
+        setSuccess('Demo account created successfully! You can now log in.')
+      }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

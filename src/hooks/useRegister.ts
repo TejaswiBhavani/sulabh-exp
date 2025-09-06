@@ -45,9 +45,72 @@ export const useRegister = () => {
       
       // Check if Supabase is properly configured
       if (!isSupabaseConfigured) {
-        throw new Error(
-          'Authentication service is not configured. Please contact the administrator or check your environment setup.'
-        )
+        // In demo mode, simulate successful registration
+        console.log('Demo mode: Simulating user registration for:', userData.email)
+        
+        // Validate the data first
+        const validationResult = registerSchema.safeParse(userData)
+        if (!validationResult.success) {
+          const formattedErrors = validationResult.error.format();
+          let errorMessage = 'Invalid form data';
+          
+          if (formattedErrors._errors && formattedErrors._errors.length > 0) {
+              errorMessage = formattedErrors._errors[0];
+          } else {
+            for (const key in formattedErrors) {
+              if (key !== '_errors' && Object.prototype.hasOwnProperty.call(formattedErrors, key)) {
+                const fieldErrorObject = (formattedErrors as any)[key];
+                if (fieldErrorObject && fieldErrorObject._errors && fieldErrorObject._errors.length > 0) {
+                  errorMessage = fieldErrorObject._errors[0];
+                  break;
+                }
+              }
+            }
+          }
+          throw new Error(errorMessage);
+        }
+        
+        // Check if demo user already exists
+        const existingDemoUser = localStorage.getItem('demo_user')
+        if (existingDemoUser) {
+          const existingUser = JSON.parse(existingDemoUser)
+          if (existingUser.email === userData.email) {
+            throw new Error('This email is already registered. Please log in or use a different email.')
+          }
+          if (existingUser.username === userData.username) {
+            throw new Error('Username is already taken. Please choose another one.')
+          }
+        }
+        
+        // Create demo user
+        const mockUser = {
+          id: `demo-${Date.now()}`,
+          email: userData.email,
+          username: userData.username,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          phone: userData.phone,
+          role: 'citizen',
+          isVerified: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+        
+        // Store in localStorage
+        localStorage.setItem('demo_user', JSON.stringify(mockUser))
+        
+        toast.success('Demo account created successfully! You can now log in.')
+        
+        // Redirect to login page
+        setTimeout(() => {
+          navigate('/login', { 
+            state: { 
+              message: 'Demo account created! You can now log in. (Connect to Supabase for full functionality)' 
+            } 
+          })
+        }, 2000)
+        
+        return
       }
       
       // Validate all required fields

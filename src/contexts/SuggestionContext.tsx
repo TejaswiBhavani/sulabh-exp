@@ -33,6 +33,14 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
   }, [user])
 
   const loadSuggestions = async () => {
+    // In demo mode, load from localStorage
+    if (!isSupabaseConfigured) {
+      const demoSuggestions = JSON.parse(localStorage.getItem('demo_suggestions') || '[]')
+      setSuggestions(demoSuggestions)
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     try {
       const { data, error } = await supabase
@@ -89,6 +97,33 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
 
   const submitSuggestion = async (suggestionData: Omit<Suggestion, 'id' | 'userId' | 'supportCount' | 'createdAt' | 'updatedAt' | 'supports' | 'comments'>): Promise<string> => {
     if (!user) throw new Error('User not authenticated')
+
+    // In demo mode, simulate suggestion submission
+    if (!isSupabaseConfigured) {
+      const mockSuggestionId = `demo-suggestion-${Date.now()}`
+      
+      const mockSuggestion: Suggestion = {
+        id: mockSuggestionId,
+        userId: user.id,
+        ...suggestionData,
+        supportCount: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        supports: [],
+        comments: []
+      }
+      
+      // Store in localStorage for demo
+      const existingSuggestions = JSON.parse(localStorage.getItem('demo_suggestions') || '[]')
+      existingSuggestions.push(mockSuggestion)
+      localStorage.setItem('demo_suggestions', JSON.stringify(existingSuggestions))
+      
+      // Update state
+      setSuggestions(prev => [mockSuggestion, ...prev])
+      
+      toast.success('Demo suggestion submitted successfully!')
+      return mockSuggestionId
+    }
 
     setLoading(true)
     try {
