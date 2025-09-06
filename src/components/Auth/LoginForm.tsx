@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { Eye, EyeOff, User, Lock, AlertCircle, Clock } from 'lucide-react'
 import { checkRateLimit, getRemainingLockoutTime } from '../../lib/supabase'
 import { useAuth } from '../../contexts/AuthContext'
+import toast from 'react-hot-toast'
 
 // Define the form schema with Zod
 const loginSchema = z.object({

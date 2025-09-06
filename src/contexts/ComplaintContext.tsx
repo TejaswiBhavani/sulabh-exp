@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { supabase } from '../lib/supabase'
 import { Complaint, ComplaintContextType } from '../types'
 import { useAuth } from './AuthContext'
 import { getCachedData, setCachedData, invalidateCache } from '../lib/cacheUtils'
