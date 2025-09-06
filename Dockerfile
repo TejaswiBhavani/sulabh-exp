@@ -4,9 +4,12 @@ FROM node:18-alpine AS build
 # Set working directory
 WORKDIR /app
 
+# Disable SSL verification for npm (to handle cert issues in Docker)
+RUN npm config set strict-ssl false
+
 # Copy dependency files and install all dependencies (including dev)
 COPY package*.json ./
-RUN npm ci --prefer-offline
+RUN NODE_ENV=development npm ci
 
 # Copy source code and build
 COPY . .
