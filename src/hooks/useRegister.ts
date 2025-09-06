@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
-import { supabase } from '../lib/supabase'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import toast from 'react-hot-toast'
 
 // Define validation schema using Zod
@@ -42,6 +42,13 @@ export const useRegister = () => {
     
     try {
       console.log('Starting registration process for:', userData.email)
+      
+      // Check if Supabase is properly configured
+      if (!isSupabaseConfigured) {
+        throw new Error(
+          'Authentication service is not configured. Please contact the administrator or check your environment setup.'
+        )
+      }
       
       // Validate all required fields
       const validationResult = registerSchema.safeParse(userData)
