@@ -17,14 +17,12 @@ pipeline {
             parallel {
                 stage('Unit Tests') {
                     steps {
-                        sh 'npm test -- --watchAll=false --coverage'
-                        junit 'junit.xml'
+                        sh 'npm run test -- --run --coverage'
                     }
                 }
                 stage('Code Quality') {
                     steps {
                         sh 'npm run lint'
-                        archiveArtifacts artifacts: 'eslint-report.html'
                     }
                 }
             }
@@ -33,7 +31,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'npm run build'
-                archiveArtifacts artifacts: 'build/**/*'
+                archiveArtifacts artifacts: 'dist/**/*'
             }
         }
 
