@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
     },
     expiresAt: {
       type: Date,
-      default: () => new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+      default: () => new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
     }
   }]
 }, {
@@ -90,7 +90,7 @@ userSchema.methods.addSession = function(sessionId) {
   this.sessions.push({
     sessionId,
     createdAt: new Date(),
-    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+    expiresAt: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
   });
   return this.save();
 };
@@ -99,6 +99,28 @@ userSchema.methods.addSession = function(sessionId) {
 userSchema.methods.removeSession = function(sessionId) {
   this.sessions = this.sessions.filter(session => session.sessionId !== sessionId);
   return this.save();
+};
+
+// Touch/extend session for rolling behavior
+userSchema.methods.touchSession = function(sessionId) {
+  const session = this.sessions.find(session => session.sessionId === sessionId);
+  if (session) {
+    // Check if this is a long-term session (30 days) or short-term (5 minutes)
+    const now = new Date();
+    const originalExpiry = session.expiresAt;
+    const timeDiff = originalExpiry.getTime() - now.getTime();
+    
+    // If session was set to expire in more than 1 day, it's a "remember me" session
+    if (timeDiff > 24 * 60 * 60 * 1000) {
+      // Extend by 30 days for remember me sessions
+      session.expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    } else {
+      // Extend by 5 minutes for regular sessions
+      session.expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    }
+    return this.save();
+  }
+  return Promise.resolve(this);
 };
 
 module.exports = mongoose.model('User', userSchema);
