@@ -153,9 +153,15 @@ router.post('/login', async (req, res) => {
 
     // Set session expiry based on remember me
     if (rememberMe) {
-      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days for remember me
+      // Update session expiry in user model for remember me
+      const sessionIndex = user.sessions.findIndex(s => s.sessionId === req.sessionID);
+      if (sessionIndex !== -1) {
+        user.sessions[sessionIndex].expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        await user.save();
+      }
     } else {
-      req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // 1 day
+      req.session.cookie.maxAge = 5 * 60 * 1000; // 5 minutes for regular sessions
     }
 
     // Clear rate limit on successful login

@@ -28,16 +28,18 @@ mongoose.connect(mongoUrl)
 // Session configuration
 app.use(session({
   secret: process.env.SESSION_SECRET || 'sulabh-grievance-system-secret-key',
-  resave: false,
+  resave: true, // Enable rolling sessions - save session on every request
   saveUninitialized: false,
+  rolling: true, // Reset expiry time on every request
   store: MongoStore.create({
     mongoUrl: mongoUrl,
-    touchAfter: 24 * 3600 // lazy session update
+    touchAfter: 0, // Always update session in store to enable rolling behavior
+    ttl: 5 * 60 // MongoDB TTL - auto cleanup after 5 minutes
   }),
   cookie: {
     secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
     httpOnly: true, // Prevent XSS
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours default
+    maxAge: 5 * 60 * 1000, // 5 minutes default for idle timeout
     sameSite: 'lax' // CSRF protection
   },
   name: 'sulabh.sid' // Custom session cookie name

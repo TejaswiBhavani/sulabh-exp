@@ -49,6 +49,9 @@ const requireAuth = async (req, res, next) => {
       lastLogin: user.lastLogin
     };
 
+    // Touch session to extend expiry for rolling behavior
+    await user.touchSession(req.sessionID);
+
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);

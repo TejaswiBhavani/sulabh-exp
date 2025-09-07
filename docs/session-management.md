@@ -55,13 +55,15 @@ NODE_ENV=production
 ```
 
 ### Session Configuration
-- **Default Session Duration**: 24 hours
-- **Remember Me Duration**: 30 days
+- **Default Session Duration**: 5 minutes (with rolling extension on activity)
+- **Remember Me Duration**: 30 days (with rolling extension on activity)
+- **Rolling Sessions**: Enabled - sessions extend on every authenticated request
 - **Cookie Security**: 
   - `httpOnly: true` (prevents XSS)
   - `secure: true` in production (HTTPS only)
   - `sameSite: 'lax'` (CSRF protection)
-- **Session Store**: MongoDB with automatic cleanup
+- **Session Store**: MongoDB with automatic cleanup (TTL: 5 minutes)
+- **Idle Timeout**: Sessions expire after 5 minutes of inactivity
 
 ## API Endpoints
 
