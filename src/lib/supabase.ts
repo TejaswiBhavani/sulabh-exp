@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '../types/database'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -22,7 +21,7 @@ if (!isSupabaseConfigured) {
 }
 
 // Create client with safe fallback values that won't cause URL construction errors
-export const supabase = createClient<Database>(
+export const supabase = createClient(
   isSupabaseConfigured ? supabaseUrl : 'https://placeholder.supabase.co',
   isSupabaseConfigured ? supabaseAnonKey : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDk3NDA4MDAsImV4cCI6MTk2NTM0ODgwMH0.placeholder',
   {
@@ -45,7 +44,7 @@ export const getCurrentUserProfile = async () => {
     .eq('id', user.id)
     .single()
 
-  return profile
+  return profile as any // Type assertion to allow flexible profile data
 }
 
 // Rate limiting for login attempts

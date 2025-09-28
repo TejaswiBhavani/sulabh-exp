@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { User as SupabaseUser, Session } from '@supabase/supabase-js'
 import { supabase, getCurrentUserProfile, isSupabaseConfigured } from '../lib/supabase'
-import { sessionAuthService } from '../lib/sessionAuth'
 import { User, AuthContextType, RegisterData } from '../types'
 import toast from 'react-hot-toast'
 
@@ -29,7 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const getInitialSession = async () => {
       try {
         if (isSupabaseConfigured) {
-          // Only attempt to get session if Supabase is configured
+          // Get initial session from Supabase
           const { data: { session } } = await supabase.auth.getSession()
           setSession(session)
           
@@ -39,23 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(null)
           }
         } else {
-          // Check for session-based authentication
-          const sessionAvailable = await sessionAuthService.isAvailable()
-          if (sessionAvailable) {
-            try {
-              const sessionStatus = await sessionAuthService.checkSession()
-              if (sessionStatus.authenticated) {
-                const profile = await sessionAuthService.getProfile()
-                setUser(profile.user)
-                console.log('Session-based authentication active')
-                return
-              }
-            } catch (error) {
-              console.log('No active session-based authentication')
-            }
-          }
-
-          // Fallback to demo session
+          // Fallback to demo session if Supabase is not configured
           const demoSession = localStorage.getItem('demo_session')
           if (demoSession) {
             const session = JSON.parse(demoSession)
@@ -110,18 +93,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const profile = await getCurrentUserProfile()
       
       if (profile) {
+        const profileData = profile as any // Type assertion for flexible profile data
         setUser({
-          id: profile.id,
-          email: profile.email,
-          username: profile.username || '',
-          firstName: profile.first_name,
-          lastName: profile.last_name,
-          phone: profile.phone || undefined,
-          role: profile.role,
-          department: profile.department || undefined,
-          isVerified: profile.is_verified || false,
-          createdAt: new Date(profile.created_at),
-          updatedAt: new Date(profile.updated_at)
+          id: profileData.id,
+          email: profileData.email,
+          username: profileData.username || '',
+          firstName: profileData.first_name,
+          lastName: profileData.last_name,
+          phone: profileData.phone || undefined,
+          role: profileData.role,
+          department: profileData.department || undefined,
+          isVerified: profileData.is_verified || false,
+          createdAt: new Date(profileData.created_at),
+          updatedAt: new Date(profileData.updated_at)
         })
       } else {
         // If profile doesn't exist yet (e.g., during signup), create minimal user object
@@ -147,20 +131,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       // Check if Supabase is properly configured
       if (!isSupabaseConfigured) {
-        // Try session-based authentication first
-        const sessionAvailable = await sessionAuthService.isAvailable()
-        if (sessionAvailable) {
-          try {
-            const response = await sessionAuthService.login({ identifier, password, rememberMe })
-            setUser(response.user)
-            toast.success('Login successful!')
-            return
-          } catch (error: any) {
-            // If session auth fails, fall back to demo mode
-            console.log('Session authentication failed, trying demo mode:', error.message)
-          }
-        }
-
         // Fallback to demo mode
         const demoUser = localStorage.getItem('demo_user')
         if (demoUser && (identifier === JSON.parse(demoUser).email || identifier === JSON.parse(demoUser).username)) {
@@ -197,9 +167,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           throw new Error('Invalid username or password')
         }
         
-        // Then login with the email
+        // Then login with the email  
+        const profileList = profileData as any[] // Type assertion for flexible profile data
         authResponse = await supabase.auth.signInWithPassword({
-          email: profileData[0].email,
+          email: profileList[0].email,
           password
         })
       }
@@ -235,19 +206,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       // Check if Supabase is properly configured
       if (!isSupabaseConfigured) {
-        // Try session-based registration first
-        const sessionAvailable = await sessionAuthService.isAvailable()
-        if (sessionAvailable) {
-          try {
-            await sessionAuthService.register(userData)
-            // Don't set user immediately for registration, let them login
-            toast.success('Account created successfully! Please log in.')
-            return
-          } catch (error: any) {
-            console.log('Session registration failed, trying demo mode:', error.message)
-          }
-        }
-
         // Fallback to demo mode
         console.log('Demo mode: Simulating user registration for:', userData.email)
         
@@ -324,8 +282,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (data.user) {
         // Create profile with user information
-        const { error: profileError } = await supabase
-          .from('profiles')
+        const { error: profileError } = await (supabase
+          .from('profiles') as any)
           .insert({
             id: data.user.id,
             email: userData.email,
@@ -360,16 +318,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (isSupabaseConfigured) {
         await supabase.auth.signOut()
       } else {
-        // Try session-based logout first
-        const sessionAvailable = await sessionAuthService.isAvailable()
-        if (sessionAvailable) {
-          try {
-            await sessionAuthService.logout()
-          } catch (error) {
-            console.log('Session logout failed, clearing local state')
-          }
-        }
-        
         // Clear demo session
         localStorage.removeItem('demo_session')
         localStorage.removeItem('demo_user')
