@@ -42,3 +42,7 @@ logs/
 
 ### OS ###
 .DS_Store
+
+### Node.js (from original project) ###
+node_modules/
+.env
