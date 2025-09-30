@@ -9,7 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findByUser(User user);
-    Optional<Transaction> findByTransactionId(String transactionId);
     List<Transaction> findByUserOrderByCreatedAtDesc(User user);
+    Optional<Transaction> findByTransactionId(String transactionId);
+    List<Transaction> findByUserAndStatusOrderByCreatedAtDesc(User user, String status);
+    List<Transaction> findByUserEmailOrderByCreatedAtDesc(String userEmail);
 }

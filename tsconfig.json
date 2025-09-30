@@ -19,8 +19,11 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node"]
+    "types": ["vite/client"]
   },
   "include": ["src"],
+  "exclude": [
+    "src/main/resources/static/frontend/supabase/functions/**/*"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

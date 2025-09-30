@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: sulabh-db
+    environment:
+      POSTGRES_DB: sulabh
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sulabh-network
+
+  app:
+    build: .
+    container_name: sulabh-app
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DATABASE_URL=jdbc:postgresql://database:5432/sulabh
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=root123
+      - JWT_SECRET=5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - sulabh-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  sulabh-network:
+    driver: bridge

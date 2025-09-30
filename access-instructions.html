@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Sulabh Backend Application</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .password-box {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .password {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: center;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .steps {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .url {
+            color: #87ceeb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .url:hover {
+            text-decoration: underline;
+        }
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background: #218838;
+        }
+        .features {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .feature {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .feature:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Sulabh Backend Application</h1>
+        <p>Java 21 • Spring Boot 3.5.6 • Publicly Accessible</p>
+    </div>
+
+    <div class="password-box">
+        <h3>🔑 Tunnel Password Required</h3>
+        <p>To access the application, you'll need this tunnel password:</p>
+        <div class="password" id="password">49.204.110.211</div>
+        <button class="copy-btn" onclick="copyPassword()">Copy Password</button>
+    </div>
+
+    <div class="steps">
+        <h3>📋 How to Access:</h3>
+        <div class="step">
+            <strong>1. Click this link:</strong> 
+            <a href="https://flat-radios-wink.loca.lt" target="_blank" class="url">
+                https://flat-radios-wink.loca.lt
+            </a>
+        </div>
+        <div class="step">
+            <strong>2. Enter the tunnel password:</strong> 49.204.110.211
+        </div>
+        <div class="step">
+            <strong>3. Click "Access Website"</strong> and enjoy the application!
+        </div>
+    </div>
+
+    <div class="features">
+        <h3>🎯 Available Features:</h3>
+        <div class="feature">Complete Fullstack Banking Application</div>
+        <div class="feature">User Authentication & Security</div>
+        <div class="feature">Account Management System</div>
+        <div class="feature">Transaction Processing</div>
+        <div class="feature">H2 Database Console (/h2-console)</div>
+        <div class="feature">RESTful API Endpoints</div>
+        <div class="feature">Responsive Frontend Interface</div>
+        <div class="feature">Running on Java 21 LTS</div>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; opacity: 0.8;">
+        <p>🌐 Application is publicly accessible worldwide</p>
+        <p>🔒 Secure HTTPS connection via localtunnel</p>
+    </div>
+
+    <script>
+        function copyPassword() {
+            const password = document.getElementById('password').textContent;
+            navigator.clipboard.writeText(password).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#17a2b8';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#28a745';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

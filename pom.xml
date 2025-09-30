@@ -13,22 +13,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sulabh-backend</name>
 	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
+		<lombok.version>1.18.30</lombok.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -48,6 +38,22 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- H2 Database for Development -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -78,13 +84,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-
 		<!-- Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -106,7 +105,100 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!-- Frontend is built manually and copied to static resources -->
+
+			<!-- Frontend files are already in static directory -->
+
+			<!-- Maven Compiler Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>frontend</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>1.12.1</version>
+						<configuration>
+							<workingDirectory>temp-sulabh-frontend</workingDirectory>
+							<installDirectory>target</installDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<id>install node and npm</id>
+								<goals>
+									<goal>install-node-and-npm</goal>
+								</goals>
+								<configuration>
+									<nodeVersion>v18.17.0</nodeVersion>
+									<npmVersion>9.6.7</npmVersion>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm install</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<configuration>
+									<arguments>install</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>npm run build</id>
+								<goals>
+									<goal>npm</goal>
+								</goals>
+								<configuration>
+									<arguments>run build</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-frontend-build</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+									<resources>
+										<resource>
+											<directory>temp-sulabh-frontend/dist</directory>
+											<filtering>false</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

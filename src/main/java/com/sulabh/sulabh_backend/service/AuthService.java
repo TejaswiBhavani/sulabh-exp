@@ -3,6 +3,7 @@ package com.sulabh.sulabh_backend.service;
 import com.sulabh.sulabh_backend.dto.AuthRequest;
 import com.sulabh.sulabh_backend.dto.AuthResponse;
 import com.sulabh.sulabh_backend.dto.RegisterRequest;
+import com.sulabh.sulabh_backend.dto.UserResponse;
 import com.sulabh.sulabh_backend.entity.User;
 import com.sulabh.sulabh_backend.repository.UserRepository;
 import com.sulabh.sulabh_backend.security.JwtTokenProvider;
@@ -22,6 +23,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final AccountService accountService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -29,13 +31,23 @@ public class AuthService {
             throw new RuntimeException("Email already registered");
         }
 
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFullName(request.getFullName());
-        user.setPhoneNumber(request.getPhoneNumber());
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .fullName(request.getFullName())
+                .phoneNumber(request.getPhoneNumber())
+                .enabled(true)
+                .build();
 
         user = userRepository.save(user);
+
+        // Automatically create a bank account for the new user
+        try {
+            accountService.createAccountForUser(user);
+        } catch (Exception e) {
+            // Log the error but don't fail registration
+            System.err.println("Failed to create account for user: " + user.getEmail() + ", Error: " + e.getMessage());
+        }
 
         String token = jwtTokenProvider.generateToken(new UserPrincipal(user));
 
@@ -60,6 +72,15 @@ public class AuthService {
         response.setToken(token);
         response.setEmail(user.getEmail());
         response.setFullName(user.getFullName());
+        response.setPhoneNumber(user.getPhoneNumber());
+        // Add user object for frontend compatibility
+        UserResponse userResponse = UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .fullName(user.getFullName())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+        response.setUser(userResponse);
         return response;
     }
 }

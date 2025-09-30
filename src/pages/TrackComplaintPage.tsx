@@ -28,7 +28,7 @@ const TrackComplaintPage: React.FC = () => {
         setError('Complaint not found. Please check the ID and try again.')
         setComplaint(null)
       }
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to track complaint. Please try again.')
       setComplaint(null)
     }

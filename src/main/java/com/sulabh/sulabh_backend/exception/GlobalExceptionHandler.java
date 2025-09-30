@@ -2,34 +2,55 @@ package com.sulabh.sulabh_backend.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGlobalException(Exception ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false));
-
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false));
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex) {
+        return new ResponseEntity<>(new ErrorResponse("Invalid credentials"), HttpStatus.UNAUTHORIZED);
+    }
 
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handleUsernameNotFound(UsernameNotFoundException ex) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ErrorResponse> handleAllUncaughtException(Exception ex) {
+        return new ResponseEntity<>(new ErrorResponse("An unexpected error occurred"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
+record ErrorResponse(String message) {}

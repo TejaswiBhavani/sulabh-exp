@@ -1,0 +1,14 @@
+[build]
+builder = "nixpacks"
+buildCommand = "./build.sh"
+
+[deploy]
+startCommand = "java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/sulabh-backend-0.0.1-SNAPSHOT.jar"
+healthcheckPath = "/auth/login"
+healthcheckTimeout = 100
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[env]
+NIXPACKS_JDK_VERSION = "17"
+NODE_VERSION = "18"

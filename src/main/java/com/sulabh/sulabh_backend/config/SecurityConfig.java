@@ -34,10 +34,15 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/", "/login", "/register", "/dashboard", "/transactions", "/settings").permitAll()
+                .requestMatchers("/static/**", "/assets/**", "/*.js", "/*.css", "/*.png", "/*.jpg", "/*.ico", "/*.svg").permitAll()
+                .requestMatchers("/index.html", "/manifest.json", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
@@ -49,11 +54,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -67,8 +73,7 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

@@ -49,7 +49,7 @@ const RegisterForm: React.FC = () => {
   const password = watch('password')
 
   const onSubmit = async (data: RegisterFormData) => {
-    const { confirmPassword, ...registerData } = data
+    const { confirmPassword: _confirmPassword, ...registerData } = data
     await registerUser(registerData as RegisterData)
   }
 

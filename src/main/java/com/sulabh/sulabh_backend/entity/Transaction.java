@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -14,39 +14,14 @@ import java.time.LocalDateTime;
 @Table(name = "transactions")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @Column(nullable = false)
-    private BigDecimal amount;
-
-    @Column(nullable = false)
-    private String status;
-
-    @Column(name = "payment_method")
-    private String paymentMethod;
-
-    @Column(name = "transaction_id", unique = true)
     private String transactionId;
 
-    @Column(name = "created_at")
+    private BigDecimal amount;
+    private String status;
+    private String paymentMethod;
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

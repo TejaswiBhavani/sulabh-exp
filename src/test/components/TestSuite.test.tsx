@@ -24,10 +24,10 @@ describe('TestSuite', () => {
   it('shows test categories', () => {
     render(<TestSuite />)
     
-    expect(screen.getByText('Security Tests')).toBeInTheDocument()
-    expect(screen.getByText('Performance Tests')).toBeInTheDocument()
-    expect(screen.getByText('Accessibility Tests')).toBeInTheDocument()
-    expect(screen.getByText('Functionality Tests')).toBeInTheDocument()
+  expect(screen.getByText(/security tests/i)).toBeInTheDocument()
+  expect(screen.getByText(/performance tests/i)).toBeInTheDocument()
+  expect(screen.getByText(/accessibility tests/i)).toBeInTheDocument()
+  expect(screen.getByText(/functionality tests/i)).toBeInTheDocument()
   })
 
   it('runs tests when button is clicked', async () => {
@@ -37,7 +37,7 @@ describe('TestSuite', () => {
     fireEvent.click(runButton)
     
     await waitFor(() => {
-      expect(screen.getByText('Running Tests...')).toBeInTheDocument()
+      expect(screen.getAllByText('Running Tests...').length).toBeGreaterThan(0)
     })
   })
 

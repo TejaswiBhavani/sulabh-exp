@@ -1,28 +1,48 @@
-# Multi-stage build for React/Vite application
-FROM node:18-alpine AS build
+# Multi-stage build for fullstack banking application
+FROM node:18-alpine AS frontend-build
 
-# Set working directory
-WORKDIR /app
-
-# Copy dependency files and install all dependencies (including dev)
-COPY package*.json ./
-RUN npm ci --prefer-offline
-
-# Copy source code and build
-COPY . .
+# Build React Frontend
+WORKDIR /app/frontend
+COPY temp-sulabh-frontend/package*.json ./
+RUN npm ci --only=production
+COPY temp-sulabh-frontend/ ./
 RUN npm run build
 
-# Production stage - serve the built app
-FROM nginx:alpine
+# Build Spring Boot Backend
+FROM openjdk:21-jdk-slim AS backend-build
 
-# Copy built files to nginx html directory
-COPY --from=build /app/dist /usr/share/nginx/html
+# Install Maven
+RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+WORKDIR /app
+COPY pom.xml ./
+COPY src ./src
+COPY --from=frontend-build /app/frontend/dist ./src/main/resources/static
 
-# Expose port 80
-EXPOSE 80
+# Build Spring Boot application
+RUN mvn clean package -DskipTests
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Production image
+FROM openjdk:21-jre-slim
+
+# Install PostgreSQL client for health checks
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy the built application
+COPY --from=backend-build /app/target/sulabh-backend-0.0.1-SNAPSHOT.jar app.jar
+
+# Create non-root user for security
+RUN groupadd -r appuser && useradd --no-log-init -r -g appuser appuser
+RUN chown appuser:appuser app.jar
+USER appuser
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8080/auth/login || exit 1
+
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
