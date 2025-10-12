@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { 
   FileText, 
   Search, 
-  BarChart3, 
   Shield, 
   Clock, 
   Globe, 

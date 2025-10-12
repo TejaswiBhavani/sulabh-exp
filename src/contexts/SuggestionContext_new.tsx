@@ -45,10 +45,10 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
     }
   }
 
-  const createSuggestion = async (suggestionData: Omit<Suggestion, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'votes' | 'comments'>) => {
+  const createSuggestion = async (suggestionData: Omit<Suggestion, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'supportCount' | 'supports' | 'comments'>): Promise<string> => {
     if (!user) {
       toast.error('Please login to create suggestions')
-      return
+      throw new Error('User not authenticated')
     }
 
     setLoading(true)
@@ -58,7 +58,8 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
         id: Date.now().toString(),
         userId: user.id,
         ...suggestionData,
-        votes: 0,
+        supportCount: 0,
+        supports: [],
         comments: [],
         createdAt: new Date(),
         updatedAt: new Date()
@@ -70,9 +71,11 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
       
       setSuggestions(updatedSuggestions)
       toast.success('Suggestion created successfully!')
+      return newSuggestion.id
     } catch (error) {
       console.error('Error creating suggestion:', error)
       toast.error('Failed to create suggestion')
+      throw error
     } finally {
       setLoading(false)
     }
@@ -98,24 +101,6 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
     }
   }
 
-  const deleteSuggestion = async (id: string) => {
-    setLoading(true)
-    try {
-      // TODO: Replace with actual API call
-      const currentSuggestions = JSON.parse(localStorage.getItem('demo_suggestions') || '[]')
-      const updatedSuggestions = currentSuggestions.filter((suggestion: Suggestion) => suggestion.id !== id)
-      localStorage.setItem('demo_suggestions', JSON.stringify(updatedSuggestions))
-      
-      setSuggestions(updatedSuggestions)
-      toast.success('Suggestion deleted successfully!')
-    } catch (error) {
-      console.error('Error deleting suggestion:', error)
-      toast.error('Failed to delete suggestion')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const voteSuggestion = async (id: string, voteType: 'up' | 'down') => {
     if (!user) {
       toast.error('Please login to vote')
@@ -127,7 +112,7 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
       const currentSuggestions = JSON.parse(localStorage.getItem('demo_suggestions') || '[]')
       const updatedSuggestions = currentSuggestions.map((suggestion: Suggestion) =>
         suggestion.id === id 
-          ? { ...suggestion, votes: suggestion.votes + (voteType === 'up' ? 1 : -1) }
+          ? { ...suggestion, supportCount: suggestion.supportCount + (voteType === 'up' ? 1 : -1) }
           : suggestion
       )
       localStorage.setItem('demo_suggestions', JSON.stringify(updatedSuggestions))
@@ -174,12 +159,15 @@ export const SuggestionProvider: React.FC<SuggestionProviderProps> = ({ children
   const value: SuggestionContextType = {
     suggestions,
     loading,
-    loadSuggestions,
-    createSuggestion,
+    submitSuggestion: createSuggestion,
     updateSuggestion,
-    deleteSuggestion,
-    voteSuggestion,
-    addComment
+    getSuggestion: (id: string) => suggestions.find(s => s.id === id),
+    getSuggestionsByUser: (userId: string) => suggestions.filter(s => s.userId === userId),
+    supportSuggestion: (suggestionId: string) => voteSuggestion(suggestionId, 'up'),
+    unsupportSuggestion: (suggestionId: string) => voteSuggestion(suggestionId, 'down'),
+    addComment,
+    updateComment: async () => {},
+    deleteComment: async () => {}
   }
 
   return (
