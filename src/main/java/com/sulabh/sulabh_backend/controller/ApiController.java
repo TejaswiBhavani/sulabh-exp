@@ -28,7 +28,7 @@ public class ApiController {
         return ResponseEntity.ok(profile);
     }
 
-    @GetMapping("/complaints")
+    @GetMapping("/demo/complaints")
     public ResponseEntity<List<Map<String, Object>>> getComplaints() {
         List<Map<String, Object>> complaints = new ArrayList<>();
         Map<String, Object> complaint = new HashMap<>();

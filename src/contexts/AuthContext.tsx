@@ -157,22 +157,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         })
       } else {
         // Login with username - first get the email associated with the username
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('email')
-          .eq('username', identifier)
-        
-        // Check if profile data exists and has at least one record
-        if (profileError || !profileData || profileData.length === 0) {
-          throw new Error('Invalid username or password')
+        // Try to query by username, but handle cases where username column doesn't exist
+        try {
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('email, username')
+            .eq('username', identifier)
+          
+          if (profileError) {
+            // If username column doesn't exist or query fails, treat as invalid credentials
+            console.log('Username lookup failed:', profileError.message)
+            throw new Error('Invalid username or password')
+          }
+          
+          // Check if profile data exists and has at least one record
+          if (!profileData || profileData.length === 0) {
+            throw new Error('Invalid username or password')
+          }
+          
+          // Then login with the email  
+          const profileList = profileData as any[] // Type assertion for flexible profile data
+          authResponse = await supabase.auth.signInWithPassword({
+            email: profileList[0].email,
+            password
+          })
+        } catch (_error: any) {
+          // If username lookup fails entirely, suggest using email instead
+          throw new Error('Username login not available. Please use your email address to login.')
         }
-        
-        // Then login with the email  
-        const profileList = profileData as any[] // Type assertion for flexible profile data
-        authResponse = await supabase.auth.signInWithPassword({
-          email: profileList[0].email,
-          password
-        })
       }
       
       const { error: signInError } = authResponse

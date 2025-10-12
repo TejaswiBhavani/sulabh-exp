@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Test Registration</h1>
+        <p>This is a simple test to verify the backend registration API is working.</p>
+        
+        <div id="messages"></div>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required minlength="6">
+            </div>
+            
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select id="role" name="role">
+                    <option value="USER">User</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="AUTHORITY">Authority</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn">Register</button>
+        </form>
+        
+        <div style="margin-top: 20px;">
+            <h3>Backend Status:</h3>
+            <button onclick="testBackend()" style="background-color: #17a2b8;">Test Backend Connection</button>
+        </div>
+    </div>
+
+    <script>
+        async function testBackend() {
+            const messages = document.getElementById('messages');
+            messages.innerHTML = '<div class="info">Testing backend connection...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8082/public/health', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.text();
+                    messages.innerHTML = '<div class="success">✅ Backend is running! Response: ' + data + '</div>';
+                } else {
+                    messages.innerHTML = '<div class="error">❌ Backend responded with status: ' + response.status + '</div>';
+                }
+            } catch (error) {
+                messages.innerHTML = '<div class="error">❌ Cannot connect to backend: ' + error.message + '</div>';
+            }
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messages = document.getElementById('messages');
+            
+            // Get form data
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('role').value
+            };
+            
+            // Basic validation
+            if (formData.password.length < 6) {
+                messages.innerHTML = '<div class="error">Password must be at least 6 characters long!</div>';
+                return;
+            }
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering...';
+            messages.innerHTML = '<div class="info">Submitting registration...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8082/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const responseData = await response.json();
+                
+                if (response.ok) {
+                    messages.innerHTML = '<div class="success">✅ Registration Successful! User created: ' + formData.username + '</div>';
+                    console.log('Success:', responseData);
+                    
+                    // Clear form
+                    document.getElementById('registrationForm').reset();
+                } else {
+                    messages.innerHTML = '<div class="error">❌ Registration Failed: ' + (responseData.message || responseData.error || 'Unknown error') + '</div>';
+                    console.error('Error:', responseData);
+                }
+            } catch (error) {
+                messages.innerHTML = '<div class="error">❌ Network Error: ' + error.message + '. Make sure the backend is running on port 8082.</div>';
+                console.error('Network Error:', error);
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Register';
+            }
+        });
+        
+        // Test backend connection on page load
+        window.addEventListener('load', function() {
+            setTimeout(testBackend, 1000);
+        });
+    </script>
+</body>
+</html>
