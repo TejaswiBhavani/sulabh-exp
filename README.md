@@ -1,4 +1,4 @@
-# Sulabh Banking Application
+# Sulabh Application
 
 A modern, secure fullstack banking application built with Spring Boot backend and React frontend.
 
